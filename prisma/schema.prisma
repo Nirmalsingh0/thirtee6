@@ -1,0 +1,35 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum ProductStatus {
+  DRAFT
+  PUBLISHED
+}
+
+model AdminUser {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  passwordHash String
+  createdAt DateTime @default(now())
+}
+
+model Product {
+  id          String        @id @default(cuid())
+  name        String
+  description String
+  priceCents  Int
+  imageUrl    String
+  fit         String?
+  gsm         Int?
+  fabric      String?
+  status      ProductStatus @default(DRAFT)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
